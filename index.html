@@ -12,52 +12,43 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
 <link rel="stylesheet" href="styles.css">
-<script>
-  // apply a saved theme before first paint
-  try { const t = localStorage.getItem("theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch (e) {}
-</script>
 </head>
 <body>
 
 <header class="top">
   <div class="wrap">
-    <a class="mark" href="#">JERRY CHEN<span>.</span></a>
+    <a class="mark" href="#">Jerry Chen</a>
     <nav>
       <a href="#work">Work</a>
       <a href="#about" class="hide-sm">About</a>
       <a href="#contact">Contact</a>
     </nav>
-    <button class="theme-btn" aria-label="Switch light / dark">
-      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 2a6 6 0 0 0 0 12z" fill="currentColor"/></svg>
-    </button>
   </div>
 </header>
 
 <main>
   <section class="hero">
-    <div class="wrap hero-grid">
-      <h1>Jerry<br>Chen<span class="dot">.</span></h1>
+    <div class="wrap">
+      <h1 class="sr-only">Jerry Chen</h1>
+      <div class="field" role="img" aria-label="Animation: a robot explores an unknown room with its lidar, and the walls it finds spell Jerry Chen">
+        <canvas id="explore"></canvas>
+        <div class="field-bar">
+          <span>Live frontier exploration · <span id="explore-readout">starting</span></span>
+          <span class="field-legend">
+            <span><i style="background:var(--ink)"></i>wall</span>
+            <span><i style="background:var(--signal)"></i>frontier</span>
+            <span><i style="background:var(--unknown)"></i>unknown</span>
+            <button class="field-btn" id="explore-toggle" aria-pressed="false">Pause</button>
+          </span>
+        </div>
+      </div>
       <div class="hero-sub">
-        <p class="lead">I build robots that map places they have never seen, and train the policies that decide where they go next.</p>
+        <p class="lead">I build robots that explore.</p>
         <dl class="hero-meta">
           <div><dt>Looking for</dt><dd>Robotics software · ML roles</dd></div>
           <div><dt>Robotics</dt><dd>ROS 2 · C++17 · SLAM · Nav2</dd></div>
           <div><dt>ML</dt><dd>PyTorch · PPO / MAPPO · evolution</dd></div>
         </dl>
-      </div>
-    </div>
-    <div class="wrap">
-      <div class="field" role="img" aria-label="Animation: a robot explores a hidden floor plan with a lidar, driving to the nearest frontier until the map is complete">
-        <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
-        <canvas id="explore"></canvas>
-        <div class="field-bar">
-          <span><b>FIG. 00</b> · frontier exploration, live · <span id="explore-readout">starting</span></span>
-          <span class="field-legend">
-            <span><i style="background:var(--ink)"></i>wall seen</span>
-            <span><i style="background:var(--signal)"></i>frontier</span>
-            <span><i style="background:var(--free);outline:1px solid var(--rule)"></i>free</span>
-          </span>
-        </div>
       </div>
     </div>
   </section>
@@ -66,7 +57,7 @@
     <div class="wrap">
       <div class="section-head">
         <h2>Selected work</h2>
-        <span class="label">Hover for the overview · Expand for the full build</span>
+        <span class="label"><span class="on-hover">Hover a project for the overview. </span>Open one for the full build.</span>
       </div>
 
       <div class="gallery">
@@ -74,8 +65,7 @@
         <!-- 01 SCOUT -->
         <article class="card" data-case="scout">
           <div class="card-media">
-            <span class="card-idx">01</span>
-            <span class="card-status"><span class="live"></span>Hardware bring-up</span>
+            <span class="card-status">Hardware bring-up in progress</span>
             <img class="fit-contain" src="assets/scout/apartment_mission_map.png" alt="Scout's map of a simulated apartment: its path in green, drop-off lines in magenta, low obstacles in blue" loading="lazy">
             <span class="ov-hint">Overview ↑</span>
             <div class="overview">
@@ -93,7 +83,7 @@
             <ul class="chips"><li>ROS 2 Jazzy</li><li>C++17</li><li>Nav2</li><li>slam_toolbox</li><li>ICP</li><li>AVR firmware</li></ul>
             <div class="card-foot">
               <span class="figure"><b>1.3 cm</b>mean localization error, sim</span>
-              <button class="btn" data-open="scout">Expand <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12 12 2M5 2h7v7"/></svg></button>
+              <button class="btn" data-open="scout">Open case study <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12 12 2M5 2h7v7"/></svg></button>
             </div>
           </div>
         </article>
@@ -101,7 +91,6 @@
         <!-- 02 GETAWAY -->
         <article class="card" data-case="getaway">
           <div class="card-media">
-            <span class="card-idx">02</span>
             <video src="assets/getaway/all_batches.mp4" poster="assets/getaway/all_batches.jpg" muted loop playsinline preload="none" aria-label="Six trained agents racing on the Tower map"></video>
             <span class="ov-hint">Overview ↑</span>
             <div class="overview">
@@ -119,7 +108,7 @@
             <ul class="chips"><li>PyTorch</li><li>PPO</li><li>Genetic algorithm</li><li>Box2D</li><li>Sim-to-real</li></ul>
             <div class="card-foot">
               <span class="figure"><b>31.42 s</b>best agent · my best 42.42 s</span>
-              <button class="btn" data-open="getaway">Expand <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12 12 2M5 2h7v7"/></svg></button>
+              <button class="btn" data-open="getaway">Open case study <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12 12 2M5 2h7v7"/></svg></button>
             </div>
           </div>
         </article>
@@ -127,7 +116,6 @@
         <!-- 03 FLEET -->
         <article class="card" data-case="fleet">
           <div class="card-media">
-            <span class="card-idx">03</span>
             <img src="assets/fleet/side_by_side.gif" alt="Two replays of the same unseen house: return-to-base on the left, the learned policy on the right" loading="lazy" style="object-fit:contain;background:#f3f5f7">
             <span class="ov-hint">Overview ↑</span>
             <div class="overview">
@@ -145,7 +133,7 @@
             <ul class="chips"><li>MAPPO</li><li>Attention</li><li>ROS 2</li><li>Gazebo</li><li>Nav2</li><li>Docker · CI</li></ul>
             <div class="card-foot">
               <span class="figure"><b>+4.7 pts</b>base coverage vs best heuristic</span>
-              <button class="btn" data-open="fleet">Expand <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12 12 2M5 2h7v7"/></svg></button>
+              <button class="btn" data-open="fleet">Open case study <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12 12 2M5 2h7v7"/></svg></button>
             </div>
           </div>
         </article>
@@ -153,7 +141,6 @@
         <!-- 04 TRON SHOT -->
         <article class="card" data-case="tronshot">
           <div class="card-media">
-            <span class="card-idx">04</span>
             <span class="card-status">Team project</span>
             <div class="placeholder" style="aspect-ratio:auto;height:100%">ADD PHOTO<br>assets/tronshot/turret.jpg</div>
             <span class="ov-hint">Overview ↑</span>
@@ -172,7 +159,7 @@
             <ul class="chips"><li>SolidWorks</li><li>3D printing</li><li>VEX IQ</li><li>C++</li><li>DFM</li></ul>
             <div class="card-foot">
               <span class="figure"><b>5+ m</b>range, from 10 cm on prototype 1</span>
-              <button class="btn" data-open="tronshot">Expand <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12 12 2M5 2h7v7"/></svg></button>
+              <button class="btn" data-open="tronshot">Open case study <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12 12 2M5 2h7v7"/></svg></button>
             </div>
           </div>
         </article>
@@ -231,7 +218,7 @@
 <template id="tpl-scout" data-title="Scout">
   <div class="wrap">
     <header class="cs-head">
-      <div class="label">01 · Robotics · Solo project · Oct 2026</div>
+      <div class="label">Robotics · Solo project · Oct 2026</div>
       <h2>Scout</h2>
       <p class="dek">Autonomous exploration on a $60 robot-car kit that maps what its lidar can't see.</p>
     </header>
@@ -249,7 +236,7 @@
     </div>
 
     <section class="cs-section">
-      <div class="label">01<b>Problem</b></div>
+      <div class="label"><b>Problem</b></div>
       <div class="prose">
         <p>A 2D lidar sees one horizontal slice of the world, 17 cm above the floor. It looks straight over a stairwell, straight through a glass door, and over a shoe. On top of that, the ELEGOO kit car has no wheel encoders and no IMU, so it can't measure its own motion.</p>
         <p>I wanted the car to explore an apartment it has never seen, map it, come back to where it started, and bring back a record of the hazards the lidar can't see. All of it using the three sensors it has: the lidar, the kit's IR line sensors, and its ultrasonic sensor.</p>
@@ -257,7 +244,7 @@
     </section>
 
     <section class="cs-section">
-      <div class="label">02<b>Result</b></div>
+      <div class="label"><b>Result</b></div>
       <div>
         <figure>
           <div class="compare" style="--pos:50%">
@@ -267,7 +254,7 @@
             <span class="tag l">Ground truth</span><span class="tag r">What Scout mapped</span>
             <input type="range" min="0" max="100" value="50" aria-label="Slide between the true apartment and Scout's map">
           </div>
-          <figcaption><b>FIG. 01</b> Drag to compare. Left: the real apartment, with <b>cyan glass</b>, <b>blue boxes below the lidar</b>, <b>red stair openings</b> and tape across a doorway. Right: what Scout came back with: the lidar map, its path (green), the drop-off and tape lines its IR sensors found (magenta) and the low boxes its sonar found (blue). The map shows no wall between the living room and kitchen because that wall is glass, and the robot never had a reason to approach it. 10 × 7 m apartment, 99.7% coverage, simulation.</figcaption>
+          <figcaption>Drag to compare. Left: the real apartment, with <b>cyan glass</b>, <b>blue boxes below the lidar</b>, <b>red stair openings</b> and tape across a doorway. Right: what Scout came back with: the lidar map, its path (green), the drop-off and tape lines its IR sensors found (magenta) and the low boxes its sonar found (blue). The map shows no wall between the living room and kitchen because that wall is glass, and the robot never had a reason to approach it. 10 × 7 m apartment, 99.7% coverage, simulation.</figcaption>
         </figure>
         <div class="tbl-wrap">
           <table class="tbl">
@@ -284,7 +271,7 @@
     </section>
 
     <section class="cs-section">
-      <div class="label">03<b>Architecture</b></div>
+      <div class="label"><b>Architecture</b></div>
       <div>
         <div class="diagram">
           <div class="dg-box">
@@ -305,7 +292,7 @@
     </section>
 
     <section class="cs-section">
-      <div class="label">04<b>Decisions</b></div>
+      <div class="label"><b>Decisions</b></div>
       <div>
         <ul class="ce">
           <li><div><span class="k">Constraint</span>The TT motors have no encoders and the kit has no IMU.</div><span class="arrow">→</span><div><span class="k">What I built</span>Lidar odometry: point-to-line ICP against keyframes (a new one every 15 cm or 0.2 rad), so noise doesn't add up scan by scan. Seeded by the PWM the board actually applied. A 1 m square plus a 360° spin with deliberately mismatched motors ends within 0.2–1.6 cm and &lt;1°.</div></li>
@@ -318,7 +305,7 @@
     </section>
 
     <section class="cs-section">
-      <div class="label">05<b>What broke</b></div>
+      <div class="label"><b>What broke</b></div>
       <div>
         <ol class="log">
           <li><b>The car drove off the stairs, twice.</b><p><span class="k">Cause</span>The kit's 3 line sensors span 3.6 cm; the wheels are 12.5 cm apart. An edge met more than ~36° off straight reaches a wheel before any sensor.</p><p><span class="k">Fix</span>Two $1 IR modules at the front corners, 1.3 cm outboard of the wheels. 0 falls in every run since. (Mounted exactly in line with the wheels, it still fell once.)</p></li>
@@ -331,7 +318,7 @@
     </section>
 
     <section class="cs-section">
-      <div class="label">06<b>On the real car</b></div>
+      <div class="label"><b>On the real car</b></div>
       <div>
         <div class="fig-grid">
           <div class="placeholder">ADD PHOTO<br>the car with the lidar mast<br>assets/scout/car.jpg</div>
@@ -348,7 +335,7 @@
     </section>
 
     <section class="cs-section">
-      <div class="label">07<b>Limits</b></div>
+      <div class="label"><b>Limits</b></div>
       <div class="prose">
         <p>The lidar is the only motion sensor, so a long blank corridor, mirrors or black surfaces leave the scan matcher little to hold, and only the motor model's guess remains. Hazards are only found where the robot drives: in the apartment run it never approached the glass wall, so the map shows a doorway there. The simulator is 2D: no wheel slip on carpet, no lidar reflections, no sonar crosstalk.</p>
       </div>
@@ -362,7 +349,7 @@
 <template id="tpl-getaway" data-title="Getaway Shootout AI">
   <div class="wrap">
     <header class="cs-head">
-      <div class="label">02 · Machine learning · Solo project · Oct 2026</div>
+      <div class="label">Machine learning · Solo project · Oct 2026</div>
       <h2>Getaway<br>Shootout AI</h2>
       <p class="dek">PPO against a genetic algorithm: same network, same inputs, same reward. Only the way they learn differs.</p>
     </header>
@@ -380,7 +367,7 @@
     </div>
 
     <section class="cs-section">
-      <div class="label">01<b>The sim</b></div>
+      <div class="label"><b>The sim</b></div>
       <div>
         <div class="prose">
           <p>My first remake guessed the physics, and it didn't play like the game. So I pulled the real Street, Train, Town and Tower maps out of the original 2019 Unity build, and ported the developer's player controller line by line onto Box2D, the engine under Unity 2D, with the game's settings (50 Hz, 8/3 solver iterations).</p>
@@ -406,24 +393,24 @@
         </ul>
         <figure class="wide">
           <div class="frame"><video src="assets/getaway/overlay.mp4" poster="assets/getaway/overlay.jpg" muted loop playsinline preload="none" data-auto controls></video></div>
-          <figcaption><b>FIG. 01</b> The model's-eye view. 16 distance rays (green: solid, red: deadly) plus velocity, lean, the next 3 checkpoints, time, and the nearest lift: all 53 inputs, listed on the right. Real time.</figcaption>
+          <figcaption>The model's-eye view. 16 distance rays (green: solid, red: deadly) plus velocity, lean, the next 3 checkpoints, time, and the nearest lift: all 53 inputs, listed on the right. Real time.</figcaption>
         </figure>
       </div>
     </section>
 
     <section class="cs-section">
-      <div class="label">02<b>Batch 1</b></div>
+      <div class="label"><b>Batch 1</b></div>
       <div>
         <h3>From the start</h3>
         <div class="prose"><p>Every episode starts at the start. The genetic algorithm finished in 36.16 s. PPO stalled at 72.9% of the route and never moved past it in 50M steps.</p></div>
         <div class="fig-grid">
           <figure>
             <div class="frame"><video src="assets/getaway/b1_ppo_stuck.mp4" poster="assets/getaway/b1_ppo_stuck.jpg" muted loop playsinline preload="none" data-auto controls></video></div>
-            <figcaption><b>FIG. 02</b> PPO at the roof ledge. It holds its lean and never tries the short tap. 2x.</figcaption>
+            <figcaption>PPO at the roof ledge. It holds its lean and never tries the short tap. 2x.</figcaption>
           </figure>
           <figure>
             <div class="frame"><video src="assets/getaway/b1_race.mp4" poster="assets/getaway/b1_race.jpg" muted loop playsinline preload="none" data-auto controls></video></div>
-            <figcaption><b>FIG. 03</b> PPO (blue) vs genetic (red), batch 1. 2x.</figcaption>
+            <figcaption>PPO (blue) vs genetic (red), batch 1. 2x.</figcaption>
           </figure>
         </div>
         <ul class="ce">
@@ -433,13 +420,13 @@
     </section>
 
     <section class="cs-section">
-      <div class="label">03<b>Batch 2</b></div>
+      <div class="label"><b>Batch 2</b></div>
       <div>
         <h3>Practice from my run</h3>
         <div class="prose"><p>To let PPO practise the ledge before it can reach it on its own, I started half the training episodes at a random moment of my best run (42.42 s), replayed exactly up to that point. Test runs still start at the start.</p></div>
         <figure class="wide">
           <div class="frame"><video src="assets/getaway/b2_race.mp4" poster="assets/getaway/b2_race.jpg" muted loop playsinline preload="none" data-auto controls></video></div>
-          <figcaption><b>FIG. 04</b> Batch 2: PPO finishes in 32.84 s, genetic in 34.68 s. 2x.</figcaption>
+          <figcaption>Batch 2: PPO finishes in 32.84 s, genetic in 34.68 s. 2x.</figcaption>
         </figure>
         <ul class="ce">
           <li><div><span class="k">Change</span>Half the episodes start mid-run from my replay.</div><span class="arrow">→</span><div><span class="k">Effect</span>PPO went from never finishing to finishing at 4.3M steps; 99% of its late test runs finish. The genetic algorithm improved from 36.16 s to 34.68 s.</div></li>
@@ -447,19 +434,19 @@
         </ul>
         <figure class="wide">
           <div class="frame"><video src="assets/getaway/learning.mp4" poster="assets/getaway/learning.jpg" muted loop playsinline preload="none" data-auto controls></video></div>
-          <figcaption><b>FIG. 05</b> PPO learning, batch 2: the agent at test runs 1, 10, 100 and 1000 raced against the final agent. The early ones get stuck; the final one finishes. 2x.</figcaption>
+          <figcaption>PPO learning, batch 2: the agent at test runs 1, 10, 100 and 1000 raced against the final agent. The early ones get stuck; the final one finishes. 2x.</figcaption>
         </figure>
       </div>
     </section>
 
     <section class="cs-section">
-      <div class="label">04<b>Batch 3</b></div>
+      <div class="label"><b>Batch 3</b></div>
       <div>
         <h3>Pay for speed</h3>
         <div class="prose"><p>The finish now pays +1 for every second left on the 90 s clock, so a second saved is worth 1.1 instead of 0.1.</p></div>
         <figure class="wide">
           <div class="frame"><video src="assets/getaway/b3_race.mp4" poster="assets/getaway/b3_race.jpg" muted loop playsinline preload="none" data-auto controls></video></div>
-          <figcaption><b>FIG. 06</b> Batch 3: PPO finishes in 31.42 s with 2 deaths; genetic in 38.34 s. 2x.</figcaption>
+          <figcaption>Batch 3: PPO finishes in 31.42 s with 2 deaths; genetic in 38.34 s. 2x.</figcaption>
         </figure>
         <ul class="ce">
           <li><div><span class="k">Change</span>Big reward for time left at the finish.</div><span class="arrow">→</span><div><span class="k">Effect on PPO</span>Fastest of any batch, 31.42 s, still improving at 37.4M steps. But reckless: a death now costs less than the time it saves, so its best run dies twice and only 91% of test runs finish (99% in batch 2).</div></li>
@@ -469,11 +456,11 @@
     </section>
 
     <section class="cs-section">
-      <div class="label">05<b>Results</b></div>
+      <div class="label"><b>Results</b></div>
       <div>
         <figure class="wide">
           <div class="frame"><video src="assets/getaway/all_batches.mp4" poster="assets/getaway/all_batches.jpg" muted loop playsinline preload="none" data-auto controls></video></div>
-          <figcaption><b>FIG. 07</b> Every batch's saved agent on one screen. 2x, zoomed out.</figcaption>
+          <figcaption>Every batch's saved agent on one screen. 2x, zoomed out.</figcaption>
         </figure>
         <div class="tbl-wrap">
           <table class="tbl">
@@ -490,14 +477,14 @@
         </div>
         <figure class="wide">
           <div class="frame white"><img src="assets/getaway/compare_all.png" alt="Best time over training steps for every batch: PPO solid, genetic dashed" loading="lazy"></div>
-          <figcaption><b>FIG. 08</b> Every batch on one chart: PPO solid, genetic dashed.</figcaption>
+          <figcaption>Every batch on one chart: PPO solid, genetic dashed.</figcaption>
         </figure>
         <div class="callout"><span class="label">Caveat</span>Each batch ran once with one seed. The genetic algorithm repeats exactly (batch 1 reproduced an earlier run to the step), but PPO doesn't, so PPO differences under ~1 s between batches are within its run-to-run noise.</div>
       </div>
     </section>
 
     <section class="cs-section">
-      <div class="label">06<b>Real game</b></div>
+      <div class="label"><b>Real game</b></div>
       <div>
         <div class="prose">
           <p>I played the agents' key presses into the real browser game. A screen watcher detects the drop-in landing within ~2 frames of the game's clock, then presses keys at the same times as in the sim.</p>
@@ -510,7 +497,7 @@
     </section>
 
     <section class="cs-section">
-      <div class="label">07<b>The math</b></div>
+      <div class="label"><b>The math</b></div>
       <div class="prose">
         <h4>Reward</h4>
         <p>Both methods are scored with the same reward per step:</p>
@@ -544,7 +531,7 @@
 <template id="tpl-fleet" data-title="Fleet exploration with RL">
   <div class="wrap">
     <header class="cs-head">
-      <div class="label">03 · Robotics + ML · Solo project · Oct 2026</div>
+      <div class="label">Robotics + ML · Solo project · Oct 2026</div>
       <h2>Fleet<br>exploration</h2>
       <p class="dek">Multi-robot exploration over a short-range radio. A learned policy decides when each robot explores, reports back, or stays as a relay.</p>
     </header>
@@ -562,20 +549,20 @@
     </div>
 
     <section class="cs-section">
-      <div class="label">01<b>Problem</b></div>
+      <div class="label"><b>Problem</b></div>
       <div>
         <div class="prose">
           <p>Frontier exploration is solved for one robot. With several robots and a short radio, what a robot sees out of range is useless to the operator until it gets reported. If the score is what the robots know, the radio barely matters: they merge maps when they meet. So I made the score what the <em>base</em> knows. That creates a trade-off nobody hand-tunes well: keep exploring, or come back and report.</p>
         </div>
         <figure class="wide">
           <div class="frame"><img src="assets/fleet/side_by_side.gif" alt="Two replays of the same unseen house: return-to-base left, learned policy right" loading="lazy"></div>
-          <figcaption><b>FIG. 01</b> Same unseen house, same start. Left: tuned return-to-base. Right: the learned policy. Light floor is what the base knows; tinted floor is seen but not yet reported; green lines are radio links. Mission average: 86% vs 91%.</figcaption>
+          <figcaption>Same unseen house, same start. Left: tuned return-to-base. Right: the learned policy. Light floor is what the base knows; tinted floor is seen but not yet reported; green lines are radio links. Mission average: 86% vs 91%.</figcaption>
         </figure>
       </div>
     </section>
 
     <section class="cs-section">
-      <div class="label">02<b>Decisions</b></div>
+      <div class="label"><b>Decisions</b></div>
       <div>
         <ul class="ce">
           <li><div><span class="k">Choice</span>RL picks goals, Nav2 drives, a lidar gate can veto any velocity.</div><span class="arrow">→</span><div><span class="k">Effect</span>~80 decisions per episode instead of ~50,000 velocity commands, so it trains on a CPU. The policy can't drive into anything.</div></li>
@@ -588,7 +575,7 @@
     </section>
 
     <section class="cs-section">
-      <div class="label">03<b>Replay it</b></div>
+      <div class="label"><b>Replay it</b></div>
       <div>
         <div class="embed">
           <div class="load">
@@ -604,7 +591,7 @@
     </section>
 
     <section class="cs-section">
-      <div class="label">04<b>Results</b></div>
+      <div class="label"><b>Results</b></div>
       <div>
         <div class="tbl-wrap">
           <table class="tbl">
@@ -620,19 +607,19 @@
         <div class="fig-grid" style="margin-top:18px">
           <figure>
             <div class="frame"><img data-light="assets/fleet/coverage_over_time_light.png" data-dark="assets/fleet/coverage_over_time_dark.png" src="assets/fleet/coverage_over_time_light.png" alt="Coverage at the base over mission time per strategy" loading="lazy"></div>
-            <figcaption><b>FIG. 02</b> Coverage at the base over the mission.</figcaption>
+            <figcaption>Coverage at the base over the mission.</figcaption>
           </figure>
           <figure>
             <div class="frame"><img data-light="assets/fleet/comm_range_light.png" data-dark="assets/fleet/comm_range_dark.png" src="assets/fleet/comm_range_light.png" alt="Mean coverage at the base vs radio range" loading="lazy"></div>
-            <figcaption><b>FIG. 03</b> It wins at every radio range, 2 to 12 m (+2.8 to +6.3 pts).</figcaption>
+            <figcaption>It wins at every radio range, 2 to 12 m (+2.8 to +6.3 pts).</figcaption>
           </figure>
           <figure>
             <div class="frame"><img data-light="assets/fleet/fleet_size_light.png" data-dark="assets/fleet/fleet_size_dark.png" src="assets/fleet/fleet_size_light.png" alt="Mean coverage at the base vs fleet size" loading="lazy"></div>
-            <figcaption><b>FIG. 04</b> Trained on 2–4 robots; still +5.3 and +5.4 pts on 5 and 6.</figcaption>
+            <figcaption>Trained on 2–4 robots; still +5.3 and +5.4 pts on 5 and 6.</figcaption>
           </figure>
           <figure>
             <div class="frame"><img data-light="assets/fleet/learning_curve_light.png" data-dark="assets/fleet/learning_curve_dark.png" src="assets/fleet/learning_curve_light.png" alt="Mean coverage during training vs baselines" loading="lazy"></div>
-            <figcaption><b>FIG. 05</b> Training: 400 updates from scratch, then 1,000 more after a change to "go to teammate".</figcaption>
+            <figcaption>Training: 400 updates from scratch, then 1,000 more after a change to "go to teammate".</figcaption>
           </figure>
         </div>
         <div class="callout"><span class="label">Where it doesn't win</span>When robots carry relay beacons it only ties a hand-written rule ("drop a beacon just before you lose signal"): +0.3 ± 1.9 pts. A simple rule is already very good there.</div>
@@ -640,18 +627,18 @@
     </section>
 
     <section class="cs-section">
-      <div class="label">05<b>In Gazebo</b></div>
+      <div class="label"><b>In Gazebo</b></div>
       <div>
         <div class="prose"><p>Each robot runs its own slam_toolbox and Nav2 stack in its own namespace. A <code>comms_sim</code> node decides who can hear whom from true positions and walls, and forwards maps only along those links. A <code>fleet_agent</code> per robot rebuilds the same observation from its SLAM map and runs the same policy, exported to ~40 lines of NumPy (a test checks it matches PyTorch to 1e-4).</p></div>
         <figure class="wide">
           <div class="frame"><video src="assets/fleet/fleet_rviz.mp4" poster="assets/fleet/fleet_rviz.jpg" muted loop playsinline preload="none" data-auto controls></video></div>
-          <figcaption><b>FIG. 06</b> A 3-robot Gazebo run in RViz, 4x: the robots map the house and park at the base before the 240 s deadline. Across three runs the base knew 93–94% of the house at the end; localization stayed within 3 cm (measured on an earlier run).</figcaption>
+          <figcaption>A 3-robot Gazebo run in RViz, 4x: the robots map the house and park at the base before the 240 s deadline. Across three runs the base knew 93–94% of the house at the end; localization stayed within 3 cm (measured on an earlier run).</figcaption>
         </figure>
       </div>
     </section>
 
     <section class="cs-section">
-      <div class="label">06<b>What broke</b></div>
+      <div class="label"><b>What broke</b></div>
       <div>
         <ol class="log">
           <li><b>Two robots dithered at the base.</b><p><span class="k">Found by</span>printing every robot's options and choice each decision.</p><p><span class="k">Cause → fix</span>All robots picked the same frontier, saw each other "claim" it, and switched every 3 s. Fixed priority (yield only to lower-id teammates) plus sticking with the current goal.</p></li>
@@ -666,14 +653,14 @@
     </section>
 
     <section class="cs-section">
-      <div class="label">07<b>Limits</b></div>
+      <div class="label"><b>Limits</b></div>
       <div class="prose">
         <p>The Gazebo fleet uses exact odometry. This rover's skid-steer wheel odometry drifted 90–170° within a minute in a controlled single-robot test, and no SLAM recovers from that; SLAM still maps from each robot's own lidar, and <code>odometry:=wheels</code> brings the realistic version back. The radio model has no bandwidth, latency or packet loss. Grid-sim robots don't collide, so the policy never learned to avoid crowding.</p>
       </div>
     </section>
 
     <section class="cs-section">
-      <div class="label">08<b>The math</b></div>
+      <div class="label"><b>The math</b></div>
       <div class="prose">
         <h4>Radio</h4>
         <p>Two nodes (robots, the base, dropped beacons) can talk if</p>
@@ -711,7 +698,7 @@
 <template id="tpl-tronshot" data-title="Tron Shot">
   <div class="wrap">
     <header class="cs-head">
-      <div class="label">04 · Mechatronics · Team project · MTE 121 / 100</div>
+      <div class="label">Mechatronics · Team project · MTE 121 / 100</div>
       <h2>Tron Shot</h2>
       <p class="dek">A carnival-style VEX IQ ball turret: two-axis aiming, a spring launcher, two firing modes, ammo tracking and a kill switch.</p>
     </header>
@@ -727,7 +714,7 @@
     </div>
 
     <section class="cs-section">
-      <div class="label">01<b>Photos</b></div>
+      <div class="label"><b>Photos</b></div>
       <div class="fig-grid">
         <div class="placeholder">ADD PHOTO<br>the finished turret<br>assets/tronshot/turret.jpg</div>
         <div class="placeholder">ADD PHOTO OR CAD<br>pitch chain drive / yaw gear<br>assets/tronshot/cad.png</div>
@@ -735,7 +722,7 @@
     </section>
 
     <section class="cs-section">
-      <div class="label">02<b>Mechanical</b></div>
+      <div class="label"><b>Mechanical</b></div>
       <div>
         <ul class="ce">
           <li><div><span class="k">Pitch</span>The pivot sits off the top-heavy assembly's center of gravity, so lifting it takes a lot of torque.</div><span class="arrow">→</span><div><span class="k">Design</span>Chain drive with 8T/24T sprockets (3:1), and the motor in brake mode so gravity can't back-drive it.</div></li>
@@ -746,7 +733,7 @@
     </section>
 
     <section class="cs-section">
-      <div class="label">03<b>Launcher</b></div>
+      <div class="label"><b>Launcher</b></div>
       <div>
         <ol class="log">
           <li><b>Flywheel through a 48:1 gearbox.</b><p>Inspired by a dissected Nerf RapidStrike. Designed in SolidWorks: 120 rpm in, 5,760 rpm out in theory.</p><p><span class="k">Result</span>Torque collapsed from 0.414 Nm to 0.009 Nm through the gearbox. The ball went ~10 cm.</p></li>
@@ -757,7 +744,7 @@
     </section>
 
     <section class="cs-section">
-      <div class="label">04<b>Software</b></div>
+      <div class="label"><b>Software</b></div>
       <div>
         <ul class="ce">
           <li><div><span class="k">Need</span>Fire exactly one ball per trigger press.</div><span class="arrow">→</span><div><span class="k">Built</span>Single-shot mode stops after a motor rotation calibrated by measurement. Automatic mode fires while the button is held; a bumper switch toggles modes mid-game.</div></li>

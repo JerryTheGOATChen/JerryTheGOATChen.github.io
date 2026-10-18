@@ -1,47 +1,36 @@
 (() => {
-  const root = document.documentElement;
-  const store = {
-    get(k) { try { return localStorage.getItem(k); } catch { return null; } },
-    set(k, v) { try { localStorage.setItem(k, v); } catch { /* private mode */ } },
-  };
-
-  // ---------- theme ----------
-  const saved = store.get("theme");
-  if (saved === "light" || saved === "dark") root.dataset.theme = saved;
-  const isDark = () => root.dataset.theme
-    ? root.dataset.theme === "dark"
-    : matchMedia("(prefers-color-scheme: dark)").matches;
+  // ---------- appearance: follows the system setting ----------
+  const darkQuery = matchMedia("(prefers-color-scheme: dark)");
+  const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   // charts come in a light and a dark version
   function syncThemedImages(scope = document) {
-    const dark = isDark();
     scope.querySelectorAll("img[data-light]").forEach((img) => {
-      const want = dark ? img.dataset.dark : img.dataset.light;
+      const want = darkQuery.matches ? img.dataset.dark : img.dataset.light;
       if (img.getAttribute("src") !== want) img.setAttribute("src", want);
     });
   }
-  function themeChanged() {
+  darkQuery.addEventListener("change", () => {
     syncThemedImages();
     document.dispatchEvent(new Event("themechange"));
-  }
-  document.querySelector(".theme-btn")?.addEventListener("click", () => {
-    root.dataset.theme = isDark() ? "light" : "dark";
-    store.set("theme", root.dataset.theme);
-    themeChanged();
   });
-  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", themeChanged);
   syncThemedImages();
 
-  // ---------- gallery: play a card's clip while hovered ----------
+  // ---------- gallery ----------
+  // card clips play while on screen, so the motion is visible before the hover overview covers it
+  const cardClips = new IntersectionObserver((entries) => {
+    entries.forEach(({ target, isIntersecting }) => {
+      if (isIntersecting) target.play().catch(() => {}); else target.pause();
+    });
+  }, { threshold: 0.5 });
   document.querySelectorAll(".card").forEach((card) => {
     const v = card.querySelector(".card-media video");
-    if (!v) return;
-    const play = () => { v.play().catch(() => {}); };
-    const stop = () => { v.pause(); };
-    card.addEventListener("mouseenter", play);
-    card.addEventListener("mouseleave", stop);
-    card.addEventListener("focusin", play);
-    card.addEventListener("focusout", stop);
+    if (v && !reducedMotion) { v.preload = "metadata"; cardClips.observe(v); }
+    // the whole card opens its case study, not just the button
+    card.addEventListener("click", (e) => {
+      if (e.target.closest("a, button")) return;
+      open(card.dataset.case);
+    });
   });
 
   // ---------- case studies ----------
@@ -57,7 +46,7 @@
     current = id;
     body.replaceChildren(tpl.content.cloneNode(true));
     const i = order.indexOf(id);
-    crumb.innerHTML = `<span>${String(i + 1).padStart(2, "0")}</span> / ${tpl.dataset.title}`;
+    crumb.innerHTML = `<span>Work /</span> ${tpl.dataset.title}`;
     const next = order[(i + 1) % order.length];
     const nextTitle = document.getElementById(`tpl-${next}`).dataset.title;
     const foot = document.createElement("div");
@@ -116,7 +105,7 @@
         if (isIntersecting) target.play().catch(() => {}); else target.pause();
       });
     }, { root: dialog, threshold: 0.4 });
-    if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (!reducedMotion) {
       scope.querySelectorAll("video[data-auto]").forEach((v) => io.observe(v));
     }
 

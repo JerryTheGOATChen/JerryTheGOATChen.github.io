@@ -1,6 +1,6 @@
-// Hero: a robot doing frontier exploration on a house it has never seen.
-// The house is hidden; the lidar reveals it; the robot drives to the nearest frontier
-// (a known-free cell next to an unknown one) until there are none left, then starts a new house.
+// Hero: a robot doing frontier exploration in a room it has never seen. The room is hidden; the lidar
+// reveals it; the robot drives to the nearest frontier (a known-free cell next to an unknown one) until
+// there are none left. The walls it finds spell the name. Each letter fills in once a ray touches it.
 (() => {
   const canvas = document.getElementById("explore");
   if (!canvas) return;
@@ -9,58 +9,94 @@
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   const UNKNOWN = 0, FREE = 1, WALL = 2;
-  const RAYS = 140, RANGE = 16, SPEED = 0.42;
-  let W, H, CELL, truth, known, robot, path, target, colors, t0, frame, doneAt, visible = true;
+  const RAYS = 200;
+  let RANGE = 20, SPEED = 0.55;   // in cells; set from the cell size so the look is the same on any screen
+  const NAME = ["JERRY", "CHEN"];
+  let W, H, CELL, truth, known, comp, compCells, compSeen, robot, path, target, colors, frame, doneAt,
+      visible = true, paused = reduced;
+  const toggle = document.getElementById("explore-toggle");
+  function setPaused(p) {
+    paused = p;
+    if (toggle) { toggle.textContent = p ? "Play" : "Pause"; toggle.setAttribute("aria-pressed", String(p)); }
+  }
+  toggle?.addEventListener("click", () => setPaused(!paused));
 
   function readColors() {
     const s = getComputedStyle(document.documentElement);
     const v = (n) => s.getPropertyValue(n).trim();
-    colors = { paper: v("--paper"), free: v("--free"), wall: v("--ink"), dot: v("--rule"),
+    colors = { paper: v("--paper"), free: v("--free"), wall: v("--ink"), dot: v("--unknown"),
                signal: v("--signal"), ray: v("--ray"), ink2: v("--ink-2") };
   }
 
-  // --- the hidden house: recursive room splits with doors, a little furniture ---
+  // --- the hidden room: four walls, and the name drawn into the grid as solid letters ---
   function rnd(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
   function makeHouse() {
     truth = new Uint8Array(W * H).fill(FREE);
-    const set = (x, y, v) => { if (x >= 0 && y >= 0 && x < W && y < H) truth[y * W + x] = v; };
-    for (let x = 0; x < W; x++) { set(x, 0, WALL); set(x, H - 1, WALL); }
-    for (let y = 0; y < H; y++) { set(0, y, WALL); set(W - 1, y, WALL); }
-    const MIN = 9;
-    const rooms = [];
-    (function split(x0, y0, x1, y1, depth) {
-      const w = x1 - x0, h = y1 - y0;
-      const canV = w > MIN * 2, canH = h > MIN * 2;
-      if ((!canV && !canH) || (depth > 3 && Math.random() < 0.3)) { rooms.push([x0, y0, x1, y1]); return; }
-      const vertical = canV && (!canH || w / Math.max(h, 1) > 1.15 || Math.random() < 0.5);
-      if (vertical) {
-        const sx = rnd(x0 + MIN, x1 - MIN);
-        const door = rnd(y0 + 2, y1 - 6);
-        for (let y = y0; y <= y1; y++) if (y < door || y > door + 4) set(sx, y, WALL);
-        split(x0, y0, sx, y1, depth + 1); split(sx, y0, x1, y1, depth + 1);
-      } else {
-        const sy = rnd(y0 + MIN, y1 - MIN);
-        const door = rnd(x0 + 2, x1 - 6);
-        for (let x = x0; x <= x1; x++) if (x < door || x > door + 4) set(x, sy, WALL);
-        split(x0, y0, x1, sy, depth + 1); split(x0, sy, x1, y1, depth + 1);
-      }
-    })(0, 0, W - 1, H - 1, 0);
-    // furniture, kept off the walls so doors stay open
-    for (const [x0, y0, x1, y1] of rooms) {
-      if (Math.random() < 0.35 || x1 - x0 < 14 || y1 - y0 < 12) continue;
-      const fw = rnd(3, Math.min(8, x1 - x0 - 10)), fh = rnd(2, Math.min(5, y1 - y0 - 9));
-      const fx = rnd(x0 + 5, x1 - 5 - fw), fy = rnd(y0 + 5, y1 - 5 - fh);
-      for (let y = fy; y < fy + fh; y++) for (let x = fx; x < fx + fw; x++) set(x, y, WALL);
+    for (let x = 0; x < W; x++) { truth[x] = WALL; truth[(H - 1) * W + x] = WALL; }
+    for (let y = 0; y < H; y++) { truth[y * W] = WALL; truth[y * W + W - 1] = WALL; }
+
+    // rasterize the name at one pixel per cell
+    const off = document.createElement("canvas");
+    off.width = W; off.height = H;
+    const o = off.getContext("2d");
+    const font = (px) => `800 ${px}px Archivo, "Arial Narrow", sans-serif`;
+    const gap = 0.45;   // space between lines, in cap heights, so the robot can drive between them
+    // one line or two, whichever gives the bigger letters
+    let lines, px = 0;
+    for (const option of [[NAME.join(" ")], NAME]) {
+      o.font = font(100);
+      if ("letterSpacing" in o) o.letterSpacing = "6px";
+      const widest = Math.max(...option.map((l) => o.measureText(l).width));
+      const capH = o.measureText("H").actualBoundingBoxAscent || 72;
+      const byW = (W * 0.84) / widest * 100;
+      const byH = (H * 0.62) / ((capH / 100) * (option.length + gap * (option.length - 1)));
+      const size = Math.floor(Math.min(byW, byH));
+      if (size > px) { px = size; lines = option; }
     }
+    px = Math.max(8, px);
+    o.font = font(px);
+    if ("letterSpacing" in o) o.letterSpacing = `${Math.max(1, Math.round(px * 0.06))}px`;
+    const cap = o.measureText("H").actualBoundingBoxAscent || px * 0.72;
+    const block = cap * lines.length + cap * gap * (lines.length - 1);
+    let y = Math.round((H - block) / 2 + cap);
+    o.fillStyle = "#000";
+    o.textBaseline = "alphabetic";
+    for (const l of lines) {
+      const w = o.measureText(l).width;
+      o.fillText(l, Math.round((W - w) / 2), y);
+      y += Math.round(cap * (1 + gap));
+    }
+    const img = o.getImageData(0, 0, W, H).data;
+
+    // group letter cells into connected pieces, so a letter appears whole once any of it is seen
+    comp = new Int32Array(W * H).fill(-1);
+    compCells = [];
+    for (let i = 0; i < W * H; i++) {
+      if (img[i * 4 + 3] < 110 || truth[i] === WALL || comp[i] >= 0) continue;
+      const id = compCells.length, cells = [i], stack = [i];
+      comp[i] = id;
+      while (stack.length) {
+        const c = stack.pop(), cx = c % W, cy = (c / W) | 0;
+        for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
+          const nx = cx + dx, ny = cy + dy, n = ny * W + nx;
+          if (nx < 1 || ny < 1 || nx >= W - 1 || ny >= H - 1 || comp[n] >= 0 || img[n * 4 + 3] < 110) continue;
+          comp[n] = id; cells.push(n); stack.push(n);
+        }
+      }
+      compCells.push(cells);
+    }
+    for (const cells of compCells) for (const c of cells) truth[c] = WALL;
+    compSeen = new Uint8Array(compCells.length);
+
     known = new Uint8Array(W * H);
-    // start in a free spot near the left middle
-    let sx = 4, sy = Math.floor(H / 2);
+    // start somewhere along the bottom-left
+    let sx = 4, sy = H - 5;
     for (let tries = 0; tries < 500; tries++) {
-      const x = rnd(3, Math.floor(W / 3)), y = rnd(3, H - 4);
-      if (clear(x, y, truth)) { sx = x; sy = y; break; }
+      const x = rnd(3, Math.floor(W / 4)), yy = rnd(Math.floor(H * 0.7), H - 4);
+      if (clear(x, yy, truth)) { sx = x; sy = yy; break; }
     }
     robot = { x: sx + 0.5, y: sy + 0.5, th: 0 };
-    path = []; target = -1; t0 = performance.now(); frame = 0; doneAt = 0;
+    path = []; target = -1; frame = 0; doneAt = 0;
     scan();
   }
 
@@ -85,7 +121,12 @@
         const cx = x | 0, cy = y | 0;
         if (cx < 0 || cy < 0 || cx >= W || cy >= H) break;
         const i = cy * W + cx;
-        if (truth[i] === WALL) { known[i] = WALL; hit = true; break; }
+        if (truth[i] === WALL) {
+          known[i] = WALL; hit = true;
+          const id = comp[i];
+          if (id >= 0 && !compSeen[id]) { compSeen[id] = 1; for (const c of compCells[id]) known[c] = WALL; }
+          break;
+        }
         known[i] = FREE;
         d += 0.35;
       }
@@ -190,7 +231,7 @@
     ctx.beginPath();
     hits.forEach(([x, y], k) => { if (k % 2 === 0) { ctx.moveTo(rx, ry); ctx.lineTo(x * CELL, y * CELL); } });
     ctx.stroke();
-    ctx.fillStyle = c.signal;
+    ctx.fillStyle = c.ink2;
     for (const [x, y, hit] of hits) if (hit) ctx.fillRect(x * CELL - 1, y * CELL - 1, 2, 2);
     // planned path
     if (path.length) {
@@ -212,7 +253,7 @@
       const pct = Math.min(100, Math.round((freeCount / total) * 100));
       const secs = Math.floor(frame / 30);
       readout.textContent = doneAt
-        ? `map complete · ${pct}% known · new house in 3 s`
+        ? `map complete · ${pct}% known`
         : `known ${String(pct).padStart(2, " ")}% · frontier cells ${frontiers} · ${RAYS} rays · t ${String(Math.floor(secs / 60)).padStart(2, "0")}:${String(secs % 60).padStart(2, "0")}`;
     }
   }
@@ -220,31 +261,44 @@
   function resize() {
     const rect = canvas.getBoundingClientRect();
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    CELL = rect.width < 600 ? 6 : 8;
+    CELL = rect.width < 600 ? 4 : 5;
+    RANGE = Math.round(120 / CELL);
+    SPEED = 3.6 / CELL;
     W = Math.max(40, Math.floor(rect.width / CELL));
     H = Math.max(24, Math.floor(rect.height / CELL));
     canvas.width = W * CELL * dpr; canvas.height = H * CELL * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     readColors();
     makeHouse();
-    if (reduced) { for (let k = 0; k < 4000 && !doneAt; k++) step(); draw(); }
+    if (reduced) { for (let k = 0; k < 4000 && !doneAt; k++) step(); }
+    draw();
   }
 
   let last = 0;
   function loop(now) {
     requestAnimationFrame(loop);
-    if (!visible || document.hidden || reduced) return;
+    if (!visible || document.hidden || paused) return;
     if (now - last < 1000 / 30) return;   // 30 fps is plenty
     last = now;
-    if (doneAt && now - doneAt > 3000) makeHouse();
+    if (doneAt && now - doneAt > 6000) makeHouse();
     step();
     draw();
   }
 
   new IntersectionObserver((e) => { visible = e[0].isIntersecting; }).observe(canvas);
   let rt;
-  addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(resize, 200); });
+  let lastWidth = 0;
+  addEventListener("resize", () => {
+    clearTimeout(rt);
+    rt = setTimeout(() => {   // phones fire resize while scrolling; only rebuild when the width changes
+      const w = canvas.getBoundingClientRect().width;
+      if (Math.abs(w - lastWidth) > 1) resize();
+    }, 200);
+  });
   document.addEventListener("themechange", () => { readColors(); draw(); });
-  resize();
-  requestAnimationFrame(loop);
+  setPaused(paused);
+  // draw the name in the real typeface once it has loaded (falls back after a second)
+  Promise.race([document.fonts?.load('800 100px "Archivo"') ?? Promise.resolve(), new Promise((r) => setTimeout(r, 1000))])
+    .catch(() => {})
+    .then(() => { resize(); lastWidth = canvas.getBoundingClientRect().width; requestAnimationFrame(loop); });
 })();
