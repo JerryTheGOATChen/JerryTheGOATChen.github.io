@@ -201,7 +201,7 @@
       <div class="about-grid">
         <div>
           <p>I like problems where the robot can't directly measure the thing it needs. Scout has no wheel encoders, so it gets its motion from lidar. The fleet can't share maps out of radio range, so it has to learn when to come back.</p>
-          <p>I measure before I change things. When a sim disagrees with reality, I write the logger or the replay that shows exactly where, then fix the cause. Each project above has a list of what broke and how I found it.</p>
+          <p>I measure before I change things. When a sim disagrees with reality, I write the logger or the replay that shows exactly where, then fix the cause. Most of the write-ups list what broke and how I found it.</p>
           <div class="contact" id="contact">
             <a class="btn" href="Jerry_Chen_Resume.pdf" target="_blank" rel="noopener">Résumé (PDF)</a>
             <a class="btn ghost" href="mailto:j2639che@uwaterloo.ca">Email</a>
@@ -342,18 +342,6 @@
       </div>
     </section>
 
-    <section class="cs-section">
-      <h3 class="label sec"><b>What broke</b></h3>
-      <div>
-        <ol class="log">
-          <li><b>The car drove off the stairs, twice.</b><p><span class="k">Cause</span>The kit's 3 line sensors span 3.6 cm; the wheels are 12.5 cm apart. An edge met more than ~36° off straight reaches a wheel before any sensor.</p><p><span class="k">Fix</span>Two $1 IR modules at the front corners, 1.3 cm outboard of the wheels. 0 falls in every run since. (Mounted exactly in line with the wheels, it still fell once.)</p></li>
-          <li><b>An EKF without a gyro drifted 40–60 cm and 40°.</b><p><span class="k">Cause</span>It re-integrated 10 Hz laser velocities, and updates that arrived late during a spin left it integrating a stale rate, while the scan matcher's own pose stayed within a few cm.</p><p><span class="k">Fix</span>No EKF without an IMU. The scan matcher publishes the odometry itself, plus a 50 Hz predicted transform for "now".</p></li>
-          <li><b>Heading jumped 20–90° mid-turn.</b><p><span class="k">Cause</span>The last raw turn rate deskewed the next scan. A slightly high rate skewed the scan, the match came out low, and the error flipped sign and grew every scan.</p><p><span class="k">Fix</span>Smooth the rate, add the change in applied PWM so turns still show up at once, retry mediocre matches from two other starting guesses, and trust an excellent match even when it disagrees.</p></li>
-          <li><b>Every Nav2 goal aborted every 30 seconds.</b><p><span class="k">Cause</span>WSL2's wall clock steps back ~1.5 s every 30 s. slam_toolbox republishes its transform from a loop that sleeps on that clock, so the transform aged past "now". I found it by running a clock-step logger and a TF-gap logger side by side.</p><p><span class="k">Fix</span>The simulator publishes its own <code>/clock</code>, and every node runs on sim time.</p></li>
-          <li><b>The robot froze at every drop-off it found.</b><p><span class="k">Cause</span>The hazard band started 1.5 cm past the sensors, which is inside the robot's padded footprint. Nav2 saw the robot in collision and refused every move, backing away included.</p><p><span class="k">Fix</span>Start the band 5 cm past the sensors.</p></li>
-        </ol>
-      </div>
-    </section>
 
     <section class="cs-section">
       <h3 class="label sec"><b>Hardware</b></h3>
