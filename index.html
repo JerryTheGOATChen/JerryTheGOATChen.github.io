@@ -66,7 +66,7 @@
         <article class="card" data-case="scout">
           <div class="card-media">
             <span class="card-status">Hardware bring-up in progress</span>
-            <img class="fit-contain" src="assets/scout/apartment_mission_map.png" alt="Scout's map of a simulated apartment: its path in green, drop-off lines in magenta, low obstacles in blue" loading="lazy">
+            <img src="assets/scout/car.jpg" alt="Scout: an ELEGOO kit car with a Raspberry Pi 5, an RPLIDAR C1 and an ultrasonic sensor on a servo" loading="lazy" style="object-position:50% 58%">
             <span class="ov-hint">Overview ↑</span>
             <div class="overview">
               <div class="label">Overview</div>
@@ -142,7 +142,7 @@
         <article class="card" data-case="tronshot">
           <div class="card-media">
             <span class="card-status">Team project</span>
-            <div class="placeholder" style="aspect-ratio:auto;height:100%">ADD PHOTO<br>assets/tronshot/turret.jpg</div>
+            <video src="assets/tronshot/demo.mp4" poster="assets/tronshot/demo.jpg" muted loop playsinline preload="none" aria-label="Tron Shot turret firing" style="object-position:50% 30%"></video>
             <span class="ov-hint">Overview ↑</span>
             <div class="overview">
               <div class="label">Overview</div>
@@ -318,11 +318,17 @@
     </section>
 
     <section class="cs-section">
-      <div class="label"><b>On the real car</b></div>
+      <div class="label"><b>Hardware</b></div>
       <div>
         <div class="fig-grid">
-          <div class="placeholder">ADD PHOTO<br>the car with the lidar mast<br>assets/scout/car.jpg</div>
-          <div class="placeholder">ADD VIDEO OR SCREENSHOT<br>real C1 scan in Foxglove<br>assets/scout/real_scan.mp4</div>
+          <figure>
+            <div class="frame"><img src="assets/scout/car.jpg" alt="Raspberry Pi 5 and RPLIDAR C1 on the ELEGOO V3 chassis" loading="lazy"></div>
+            <figcaption>The build: Raspberry Pi 5 and RPLIDAR C1 on the ELEGOO V3 chassis, with the HC-SR04 on its servo at the front. The IR line sensors sit underneath.</figcaption>
+          </figure>
+          <figure>
+            <div class="frame"><img src="assets/scout/car_kit.jpg" alt="The stock ELEGOO kit car before the Pi and lidar were added" loading="lazy"></div>
+            <figcaption>The starting point: the stock kit with its ELEGOO UNO R3, L298N motor driver and battery pack. No encoders, no IMU.</figcaption>
+          </figure>
         </div>
         <ul class="status-list">
           <li><span class="st done">Done</span><span>Firmware flashed and verified on the ELEGOO UNO R3: telemetry at ~52 Hz, sonar at ~28 pings/s.</span></li>
@@ -714,10 +720,20 @@
     </div>
 
     <section class="cs-section">
-      <div class="label"><b>Photos</b></div>
-      <div class="fig-grid">
-        <div class="placeholder">ADD PHOTO<br>the finished turret<br>assets/tronshot/turret.jpg</div>
-        <div class="placeholder">ADD PHOTO OR CAD<br>pitch chain drive / yaw gear<br>assets/tronshot/cad.png</div>
+      <div class="label"><b>In action</b></div>
+      <div class="media-row">
+        <figure class="tall">
+          <div class="frame"><video src="assets/tronshot/demo.mp4" poster="assets/tronshot/demo.jpg" muted loop playsinline preload="none" data-auto controls></video></div>
+          <figcaption>Firing demo.</figcaption>
+        </figure>
+        <figure>
+          <div class="frame"><img src="assets/tronshot/spring.jpg" alt="The spring-piston launcher" loading="lazy"></div>
+          <figcaption>Launcher: a 1:3 planetary gear winds the spring piston, which releases at 90° of rotation.</figcaption>
+        </figure>
+        <figure>
+          <div class="frame"><img src="assets/tronshot/pitch.jpg" alt="The pitch chain drive with 8T and 24T sprockets" loading="lazy"></div>
+          <figcaption>Pitch: 8T to 24T chain drive (3:1), motor held in brake mode.</figcaption>
+        </figure>
       </div>
     </section>
 
