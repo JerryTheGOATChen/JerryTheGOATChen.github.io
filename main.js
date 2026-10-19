@@ -29,6 +29,7 @@
     // the whole card opens its case study, not just the button
     card.addEventListener("click", (e) => {
       if (e.target.closest("a, button")) return;
+      card.querySelector("[data-open]").focus({ preventScroll: true });   // so closing returns focus here
       open(card.dataset.case);
     });
   });
@@ -47,6 +48,7 @@
     body.replaceChildren(tpl.content.cloneNode(true));
     const i = order.indexOf(id);
     crumb.innerHTML = `<span>Work /</span> ${tpl.dataset.title}`;
+    dialog.setAttribute("aria-label", `${tpl.dataset.title} case study`);
     const next = order[(i + 1) % order.length];
     const nextTitle = document.getElementById(`tpl-${next}`).dataset.title;
     const foot = document.createElement("div");
