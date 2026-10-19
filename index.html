@@ -356,13 +356,6 @@
             <figcaption>The starting point: the stock kit with its ELEGOO UNO R3, L298N motor driver and battery pack. No encoders, no IMU.</figcaption>
           </figure>
         </div>
-        <ul class="status-list">
-          <li><span class="st done">Done</span><span>Firmware flashed and verified on the ELEGOO UNO R3: telemetry at ~52 Hz, sonar at ~28 pings/s.</span></li>
-          <li><span class="st done">Done</span><span>Measured the real RPLIDAR C1 (10.2 Hz, 1–5 mm noise, 8.8 cm minimum return) and matched the simulator's scan format and intensities to it. Found an indexing bug in the rplidar_ros driver that scrambled intensities; the setup script patches it.</span></li>
-          <li><span class="st done">Done</span><span>One-command Pi setup: dependencies, udev rules, a swap check, and a build tuned for the Pi's RAM.</span></li>
-          <li><span class="st next">Next</span><span>Wheel direction and motor calibration. The motors' start-up current currently drops the USB link, so the batteries come first.</span></li>
-          <li><span class="st next">Next</span><span>Line-sensor calibration, then the first real mission.</span></li>
-        </ul>
       </div>
     </section>
 
