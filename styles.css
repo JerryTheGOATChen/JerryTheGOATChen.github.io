@@ -398,3 +398,6 @@ figcaption b { color: var(--ink); font-weight: 600; }
   .zip-anim polyline { animation: zip-draw 6s ease-in-out infinite; }
 }
 @keyframes zip-draw { 0% { stroke-dashoffset: 1; } 45%, 90% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: 0; stroke-opacity: 0; } }
+
+/* long URLs and identifiers wrap instead of pushing the page sideways */
+.meta-row, .prose, figcaption, .where, .jobs { overflow-wrap: anywhere; }
