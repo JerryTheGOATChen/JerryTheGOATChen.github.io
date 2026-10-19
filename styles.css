@@ -375,3 +375,26 @@ figcaption b { color: var(--ink); font-weight: 600; }
 
 /* portrait phone photos: keep them from towering over the text */
 .fig-grid .frame img { aspect-ratio: 4 / 5; object-fit: cover; }
+
+/* the fifth project spans the row: picture left, text right */
+@media (min-width: 821px) {
+  .card.wide { grid-column: 1 / -1; flex-direction: row; }
+  .card.wide .card-media { flex: 0 0 50%; aspect-ratio: 16 / 10; border-bottom: 0; border-right: 1px solid var(--line); }
+}
+
+/* about: experience */
+.sub { font: 600 20px/1.2 var(--display); letter-spacing: -0.01em; margin: 0 0 10px; }
+.sub + .jobs, .jobs + .sub { margin-top: 0; }
+.jobs { list-style: none; padding: 0; margin: 0 0 32px; border-top: 1px solid var(--line); }
+.jobs li { padding: 12px 0; border-bottom: 1px solid var(--rule); font-size: 15px; }
+.jobs b { font-weight: 600; }
+.jobs .when { float: right; color: var(--ink-2); font-size: 14px; margin-left: 12px; }
+.jobs p { margin: 4px 0 0; color: var(--ink-2); }
+
+/* zip: the solved path draws itself over the board, then holds */
+.zip-anim svg { display: block; width: 100%; height: auto; }
+.zip-anim polyline { stroke: #2f4a62; stroke-opacity: 0.8; stroke-width: 14; stroke-dasharray: 1; stroke-dashoffset: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .zip-anim polyline { animation: zip-draw 6s ease-in-out infinite; }
+}
+@keyframes zip-draw { 0% { stroke-dashoffset: 1; } 45%, 90% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: 0; stroke-opacity: 0; } }

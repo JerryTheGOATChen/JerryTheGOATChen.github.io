@@ -6,7 +6,14 @@
 <title>Jerry Chen · Robotics &amp; ML</title>
 <meta name="description" content="Jerry Chen: robotics software and machine learning. ROS 2, C++, SLAM, Nav2, reinforcement learning, PyTorch.">
 <meta name="color-scheme" content="light dark">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23151515'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%23ff4d17'/%3E%3C/svg%3E">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Jerry Chen · Robotics &amp; ML">
+<meta property="og:description" content="I build robots that explore. ROS 2, C++, SLAM, Nav2, reinforcement learning, PyTorch.">
+<meta property="og:image" content="https://jerrythegoatchen.github.io/assets/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
@@ -164,6 +171,31 @@
           </div>
         </article>
 
+        <!-- 05 ZIP -->
+        <article class="card wide" data-case="zip">
+          <div class="card-media">
+            <img src="assets/zip/card.jpg" alt="A LinkedIn Zip board with the solved path drawn through every cell" loading="lazy">
+            <span class="ov-hint">Overview ↑</span>
+            <div class="overview">
+              <div class="label">Overview</div>
+              <ul>
+                <li>Typing the board in is too slow for a race, so the program finds the grid on screen from its evenly spaced lines and reads the numbers with OCR.</li>
+                <li>Plain depth-first search is O(n!), so every step first checks that the unvisited cells can still all be covered. A 6×6 board solves in about 2 ms.</li>
+                <li>Then it plays the answer with the arrow keys, about a second from spotting the board.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card-body">
+            <h3>Zip Solver</h3>
+            <p>Computer vision and a Hamiltonian-path search that read LinkedIn's daily Zip puzzle off the screen, solve it, and play it.</p>
+            <ul class="chips"><li>Python</li><li>OpenCV</li><li>Tesseract OCR</li><li>Search + pruning</li><li>Bitmasks</li></ul>
+            <div class="card-foot">
+              <span class="figure"><b>~2 ms</b>to solve a 6×6 board</span>
+              <button class="btn" data-open="zip">Open case study <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12 12 2M5 2h7v7"/></svg></button>
+            </div>
+          </div>
+        </article>
+
       </div>
     </div>
   </section>
@@ -176,19 +208,30 @@
           <p>I like problems where the robot can't directly measure the thing it needs. Scout has no wheel encoders, so it gets its motion from lidar. The fleet can't share maps out of radio range, so it has to learn when to come back.</p>
           <p>I measure before I change things. When a sim disagrees with reality, I write the logger or the replay that shows exactly where, then fix the cause. Each project above has a list of what broke and how I found it.</p>
           <div class="contact" id="contact">
-            <a class="btn" href="mailto:ogjeche3342@gmail.com">Email me</a>
-            <a class="btn ghost" href="https://github.com/JerryTheGOATChen">GitHub</a>
-            <!-- <a class="btn ghost" href="resume.pdf">Résumé (PDF)</a>  add resume.pdf next to index.html, then uncomment -->
+            <a class="btn" href="Jerry_Chen_Resume.pdf" target="_blank" rel="noopener">Résumé (PDF)</a>
+            <a class="btn ghost" href="mailto:j2639che@uwaterloo.ca">Email</a>
+            <a class="btn ghost" href="https://www.linkedin.com/in/jerry-chen-947711331/" target="_blank" rel="noopener">LinkedIn</a>
+            <a class="btn ghost" href="https://github.com/JerryTheGOATChen" target="_blank" rel="noopener">GitHub</a>
           </div>
         </div>
+        <div>
+        <h3 class="sub">Experience</h3>
+        <ul class="jobs">
+          <li><b>ML Engineer</b>, Doubler Aerospace<span class="when">Aug 2026 – now</span><p>Remaining-life prediction from equipment sensor data, an airfoil performance model for fast design comparison, and aircraft detection in satellite imagery.</p></li>
+          <li><b>Design Team Member</b>, WATonomous<span class="when">Sep 2025 – now</span><p>A custom 3D Nav2 navigation plugin in ROS 2, EKF vehicle localization, Docker with CI/CD.</p></li>
+          <li><b>Engineering Assistant</b>, All Equip Ltd<span class="when">May – Aug 2026</span><p>B-train trailer assemblies in CAD, 800+ engineering drawings for the shop floor, and the company's ERP system.</p></li>
+          <li><b>BASc Mechatronics Engineering</b>, University of Waterloo<span class="when">Sep 2025 – now</span></li>
+        </ul>
+        <h3 class="sub">Skills</h3>
         <dl class="stack">
           <div><dt>Robotics</dt><dd>ROS 2 Jazzy, Nav2 (custom costmap plugin, BT), slam_toolbox, robot_localization, Gazebo Harmonic, TF2, Foxglove</dd></div>
-          <div><dt>Languages</dt><dd>C++17, Python, Arduino / AVR C++</dd></div>
+          <div><dt>Languages</dt><dd>C++17, Python, Java, Arduino / AVR C++</dd></div>
           <div><dt>ML</dt><dd>PyTorch, PPO, MAPPO (CTDE), attention policies, genetic algorithms, NumPy inference</dd></div>
           <div><dt>Algorithms</dt><dd>Point-to-line ICP, frontier search, occupancy grids, GAE, Box2D physics</dd></div>
           <div><dt>Hardware</dt><dd>Raspberry Pi 5, RPLIDAR C1, ELEGOO UNO R3, L298N, HC-SR04, VEX IQ</dd></div>
-          <div><dt>Tooling</dt><dd>Docker, GitHub Actions, colcon, gtest, pytest, SolidWorks</dd></div>
+          <div><dt>Tooling</dt><dd>Docker, GitHub Actions, colcon, gtest, pytest, SolidWorks, Onshape, OpenCV</dd></div>
         </dl>
+        </div>
       </div>
     </div>
   </section>
@@ -367,7 +410,7 @@
       <div><b>14k/s</b><span>sim steps on 8 CPU cores</span></div>
     </div>
     <div class="meta-row">
-      <div><span class="label">Stack</span>Python, PyTorch, Box2D, pygame, multiprocessing, UnityPy (map extraction)</div>
+      <div><span class="label">Stack</span>Python, PyTorch, Box2D, pygame, multiprocessing, a custom Unity asset reader (map extraction)</div>
       <div><span class="label">Task</span>Speedrun the Tower map: hold a key to lean, release to jump along your body</div>
       <div><span class="label">Policy</span>53 inputs → 64 → 64 → 3 actions (release, hold left, hold right), 25 decisions/s</div>
     </div>
@@ -543,7 +586,7 @@
     </header>
     <div class="specs">
       <div><b>+4.7</b><span>pts base coverage vs best heuristic (±1.4, 95% CI)</span></div>
-      <div><b>51 s</b><span>sooner to 90% coverage</span></div>
+      <div><b>25%</b><span>sooner to 90% coverage (151 s vs 202 s)</span></div>
       <div><b>~50k</b><span>policy parameters</span></div>
       <div><b>2.2 h</b><span>training, laptop CPU</span></div>
       <div><b>240x</b><span>real time per core (grid sim)</span></div>
@@ -766,6 +809,115 @@
           <li><div><span class="k">Need</span>Stop firing when the magazine is empty.</div><span class="arrow">→</span><div><span class="k">Built</span>An optical sensor counts ammo and disables firing at zero; a reload button resets it. The sensor couldn't reliably see VEX balls, so it reads a green card as a proxy target.</div></li>
           <li><div><span class="k">Need</span>Make it safe to run at an event.</div><span class="arrow">→</span><div><span class="k">Built</span>A touch sensor gates program start and stop, and a controller kill switch halts every motor and returns the turret home.</div></li>
         </ul>
+      </div>
+    </section>
+  </div>
+</template>
+
+<!-- ======================================================================
+     05 · ZIP SOLVER
+     ====================================================================== -->
+<template id="tpl-zip" data-title="Zip Solver">
+  <div class="wrap">
+    <header class="cs-head">
+      <div class="label">Computer vision + search · Solo project · Dec 2025 – Oct 2026</div>
+      <h2>Zip Solver</h2>
+      <p class="dek">Reads LinkedIn's daily Zip puzzle off the screen, solves it, and plays it in about a second.</p>
+    </header>
+    <div class="specs">
+      <div><b>~2 ms</b><span>to solve a 6×6 board</span></div>
+      <div><b>15 ms</b><span>to find the board in a screenshot</span></div>
+      <div><b>0</b><span>cells typed in by hand</span></div>
+      <div><b>11</b><span>unit tests, on real screenshots</span></div>
+    </div>
+    <div class="meta-row">
+      <div><span class="label">Stack</span>Python, OpenCV, Tesseract OCR, NumPy, PyAutoGUI</div>
+      <div><span class="label">Rules of Zip</span>One path through every cell, numbers 1 to N in order, never across a wall</div>
+      <div><span class="label">Code</span><a href="https://github.com/JerryTheGOATChen/FastestZipFinder" target="_blank" rel="noopener">github.com/JerryTheGOATChen/FastestZipFinder</a></div>
+    </div>
+
+    <section class="cs-section">
+      <div class="label"><b>Problem</b></div>
+      <div class="prose">
+        <p>My friends and I race each other on LinkedIn's daily Zip puzzle. Reading the board, finding the path and dragging it out takes a person tens of seconds. I wanted first place every day, so I built a program that does all three.</p>
+      </div>
+    </section>
+
+    <section class="cs-section">
+      <div class="label"><b>Result</b></div>
+      <div>
+        <figure class="wide zip-anim">
+          <div class="frame white">
+            <svg viewBox="0 0 800 656" role="img" aria-label="The solver's path being drawn over a real Zip board">
+              <image href="assets/zip/board.jpg" width="800" height="656"/>
+              <polyline pathLength="1" fill="none" stroke-linecap="round" stroke-linejoin="round"
+                points="285,205 356,205 428,205 499,205 499,276 428,276 356,276 285,276 214,276 214,205 214,134 285,134 356,134 428,134 499,134 570,134 570,205 570,276 570,347 499,347 428,347 356,347 285,347 214,347 214,418 214,489 285,489 356,489 428,489 499,489 570,489 570,418 499,418 428,418 356,418 285,418"/>
+            </svg>
+          </div>
+          <figcaption>The solved path drawn over the real board it was read from: 36 cells, numbers 1 to 8 in order, around all five walls.</figcaption>
+        </figure>
+        <div class="fig-grid">
+          <figure>
+            <div class="frame white"><img src="assets/zip/board.jpg" alt="A Zip board as it appears on screen" loading="lazy" style="aspect-ratio:auto"></div>
+            <figcaption>What's on screen.</figcaption>
+          </figure>
+          <figure>
+            <div class="frame white"><img src="assets/zip/detected.jpg" alt="The solver's debug image: grid lines, walls, numbers and the path" loading="lazy" style="aspect-ratio:auto"></div>
+            <figcaption>What the program sees (its <code>--debug</code> image): grid lines in green, walls in red, the numbers it read, and the path it will play in blue.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="cs-section">
+      <div class="label"><b>Decisions</b></div>
+      <div>
+        <ul class="ce">
+          <li><div><span class="k">Problem</span>The board's size and position change with the window and the puzzle.</div><span class="arrow">→</span><div><span class="k">What I built</span>Keep only long, straight dark lines in the screenshot, then look for a square group of evenly spaced ones. That group is the board, and the number of lines is the grid size.</div></li>
+          <li><div><span class="k">Problem</span>Walls and numbers have to be read, not typed.</div><span class="arrow">→</span><div><span class="k">What I built</span>A thick black bar on the edge between two cells is a wall. A cell with a black disc holds a number, which is cut out and read with Tesseract.</div></li>
+          <li><div><span class="k">Problem</span>OCR sometimes misreads a digit.</div><span class="arrow">→</span><div><span class="k">What I built</span>The numbers must come out as exactly 1..N with no repeats. If they don't, the program asks only for the unclear cells instead of solving a wrong board.</div></li>
+          <li><div><span class="k">Problem</span>Plain depth-first search over a 7×7 board is O(n!) in the worst case.</div><span class="arrow">→</span><div><span class="k">What I built</span>Before every step, four cheap checks prove the unvisited cells can still be covered (below), and the search backtracks the moment one fails. A 6×6 board solves in about 2 ms.</div></li>
+          <li><div><span class="k">Problem</span>Those checks run at every step of the search.</div><span class="arrow">→</span><div><span class="k">What I built</span>The visited set is a bitmask in one integer, so each check is a handful of AND, OR and popcount operations.</div></li>
+          <li><div><span class="k">Problem</span>A search that guesses wrong early can stay lost for a long time.</div><span class="arrow">→</span><div><span class="k">What I built</span>Each attempt gets a step budget. When it runs out, the search restarts from the other end of the path with a different tie-break, and the budget doubles.</div></li>
+          <li><div><span class="k">Problem</span>The board animates in, and a half-drawn board reads wrong.</div><span class="arrow">→</span><div><span class="k">What I built</span>The program waits until it detects the same board twice in a row before solving it.</div></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="cs-section">
+      <div class="label"><b>How it changed</b></div>
+      <div>
+        <ol class="log">
+          <li><b>One path, not segments.</b><p><span class="k">Before</span>The first solver searched from each number to the next and stored the answer as separate segments, which doesn't guarantee every cell is covered.</p><p><span class="k">After</span>One search over the whole board with the numbers as waypoints: a Hamiltonian path.</p></li>
+          <li><b>Walls.</b><p><span class="k">Before</span>The first version had no idea walls existed.</p><p><span class="k">After</span>Wall detection in the vision step; the solver removes the link between the two cells a wall separates.</p></li>
+          <li><b>No typing.</b><p><span class="k">Before</span>The grid and numbers were typed in by hand.</p><p><span class="k">After</span>The board is found anywhere on screen, its size is detected, and the program starts on its own when the puzzle appears.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="cs-section">
+      <div class="label"><b>Limits</b></div>
+      <div class="prose">
+        <p>It reads LinkedIn's light theme only, needs a square board with no path drawn yet, and can click the wrong place on mixed-DPI multi-monitor setups, so the game has to be on the primary monitor.</p>
+      </div>
+    </section>
+
+    <section class="cs-section">
+      <div class="label"><b>The math</b></div>
+      <div class="prose">
+        <p>The board is a grid graph \(G\) with the wall edges removed. A Zip solution is a Hamiltonian path in \(G\) that visits the numbered cells \(w_1, \dots, w_N\) in order. With the head of the path at \(h\) and the unvisited cells \(U\), a step is only taken if all four checks pass:</p>
+        <h4>1. Colour count</h4>
+        <p>Colour the board like a checkerboard, \(\chi(r, c) = (r + c) \bmod 2\). Every step changes colour, so the rest of the path alternates, starting with the colour opposite \(h\):</p>
+        <div class="math">\[ \big|\{\,u \in U : \chi(u) \neq \chi(h)\,\}\big| \;=\; \left\lceil \tfrac{|U|}{2} \right\rceil \]</div>
+        <h4>2. Reachability</h4>
+        <p class="where">The next number \(w_k\) must be reachable from \(h\) through unvisited, unnumbered cells. One flood fill over the bitmask.</p>
+        <h4>3. Link counting</h4>
+        <p>In the finished path every unvisited cell has two path neighbours, except the last number, which has one:</p>
+        <div class="math">\[ \deg_{\text{path}}(u) = \begin{cases} 1 & u = w_N \\ 2 & \text{otherwise} \end{cases} \qquad \text{so each } u \text{ needs } \big|N_G(u) \cap (U \cup \{h\})\big| \ge \deg_{\text{path}}(u) \]</div>
+        <p class="where">A cell with no links to spare must use all of them, which removes options from its neighbours. The check propagates that until nothing changes or some cell runs short.</p>
+        <h4>4. Cut cells</h4>
+        <p class="where">One depth-first walk from \(h\) (Tarjan's cut-vertex algorithm) checks that \(U\) is in one piece. A cut cell can be crossed only once, so the pocket behind it must hold exactly the highest remaining numbers: the path has to end there.</p>
+        <p>Among the moves that pass, the search tries the most constrained neighbour first (fewest free neighbours), since it is the likeliest to get stranded.</p>
       </div>
     </section>
   </div>
